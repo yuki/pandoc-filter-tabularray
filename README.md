@@ -16,7 +16,7 @@ There's an `latex_example.tex` file to see how is the real environment in LaTeX.
 
 To create this example I have created a very basic template (file: `template/latex.tex`), that is like the LaTeX example. The markdown file is `markdown_example.md`and you can generate the PDF with Pandoc:
 
-```pandoc markdown_example.md --template=template/latex.tex --lua-filter=filter.lua -o markdown_example.pdf --verbose```
+```pandoc -f markdown-markdown_in_html_blocks+table_captions markdown_example.md --template=template/latex.tex --lua-filter=filter.lua -o markdown_example.pdf --verbose```
 
 ## What the filter does
 
@@ -48,4 +48,9 @@ Eta & Theta & Iota \\
 
 If you want to see how is the generated LaTeX file before the PDF creation you can execute:
 
-```pandoc markdown_example.md --template=template/latex.tex --lua-filter=filter.lua -o markdown_example.tex --verbose ```
+```pandoc -f markdown-markdown_in_html_blocks+table_captions markdown_example.md --template=template/latex.tex --lua-filter=filter.lua -o markdown_example.tex --verbose ```
+
+
+## HTML example
+
+I have added a table in HTML that is parsed too with the filter. HTML is very complex compared to Markdown, so right now there are features that are in the HTML that are not parset into Tabularray-LaTeX.

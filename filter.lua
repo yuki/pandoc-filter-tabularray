@@ -16,9 +16,9 @@ end
 function generate_tabularray(tbl)
   local table_class = 'longtblr'
 
-  -- if (tbl.attributes['tablename'] ~= nil) then
-  --   table_class = tbl.attributes['tablename']
-  -- end
+  if (tbl.attributes['tablename'] ~= nil) then
+    table_class = tbl.attributes['tablename']
+  end
 
   local caption = pandoc.utils.stringify(tbl.caption.long)
   local caption_content = caption:match("{(.-)}")
@@ -28,7 +28,6 @@ function generate_tabularray(tbl)
 
   if caption_content then
     local new_table_class = caption_content:match("=(.*)")
-    print (new_table_class)
     if new_table_class then
       table_class = new_table_class
     end
@@ -43,9 +42,9 @@ function generate_tabularray(tbl)
 
     col_specs_latex = col_specs_latex .. 'X['
 
-    -- if width ~= 0 and width ~= nil then
-    --   col_specs_latex = col_specs_latex .. width..'\\linewidth,'
-    -- end
+    if width ~= 0 and width ~= nil then
+      col_specs_latex = col_specs_latex .. width..'\\linewidth,'
+    end
 
     if align == 'AlignLeft' then
       col_specs_latex = col_specs_latex .. 'l'
@@ -87,6 +86,17 @@ if FORMAT:match 'latex' then
 
   function Table (tbl)
     return generate_tabularray(tbl)
+  end
+
+  function RawBlock(raw)    
+    if raw.format:match 'html' and raw.text:match '%<table' then
+      blocks = pandoc.read(raw.text, raw.format).blocks
+      for i, block in ipairs(blocks) do
+        if block.t == 'Table' then
+          return generate_tabularray(block)
+        end
+      end
+    end
   end
 
 end
