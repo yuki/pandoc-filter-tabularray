@@ -1,0 +1,38 @@
+\documentclass{book}
+\usepackage[utf8]{inputenc}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tabularray}
+
+% configuration to make into tbl and longtbl
+\SetTblrInner[tblr,longtblr]{
+    hlines,
+}
+
+\NewTblrEnviron{yukitblr}
+% Configs to remove caption and longtables texts
+\DefTblrTemplate{contfoot-text}{yukitblr}{}
+\DefTblrTemplate{conthead-text}{yukitblr}{}
+\DefTblrTemplate{caption}{yukitblr}{}
+\DefTblrTemplate{conthead}{yukitblr}{}
+\DefTblrTemplate{capcont}{yukitblr}{}
+
+\SetTblrInner[yukitblr]{
+    vlines,
+    hlines,
+    rowsep=6pt,
+    colsep=12pt,
+    row{odd} = {LimeGreen!10},
+    row{1} = {bg=LimeGreen,fg=white,font=\bfseries},
+    cells={c,m},
+}
+\SetTblrOuter[yukitblr]{
+    long,
+    label=none,
+}
+
+\begin{document}
+
+$body$
+
+\end{document}
