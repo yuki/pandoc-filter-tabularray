@@ -57,8 +57,6 @@ function generate_tabularray(tbl)
     col_specs_latex = col_specs_latex .. ']'
   end
 
-
-
   local result = pandoc.List:new{pandoc.RawBlock("latex", '\\begin{'..table_class..'}[caption={'..caption..'}]{'..col_specs_latex..'}')}
 
   -- HEADER
@@ -72,7 +70,7 @@ function generate_tabularray(tbl)
   end
   result = result .. pandoc.List:new{pandoc.RawBlock("latex", rows_latex)}
 
-  -- Footer
+  -- FOOTER
   local footer_latex = get_rows_data(tbl.foot.rows)
   result = result .. pandoc.List:new{pandoc.RawBlock("latex", footer_latex)}
 
@@ -97,6 +95,29 @@ if FORMAT:match 'latex' then
         end
       end
     end
+  end
+
+end
+
+-- when parsing to HTML
+if FORMAT:match 'html' then
+
+  function Table(tbl)
+    local table_class = 'longtblr'
+    local caption = pandoc.utils.stringify(tbl.caption.long)
+    local caption_content = caption:match("{(.-)}")
+
+    if caption_content then
+      tbl.caption.long = caption:gsub("{.-}", "")
+      local new_table_class = caption_content:match("=(.*)")
+      if new_table_class then
+        table_class = new_table_class
+      end
+    end
+
+    tbl.attributes['tablename'] = table_class
+
+    return tbl
   end
 
 end

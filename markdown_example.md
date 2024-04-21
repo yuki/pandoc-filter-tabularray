@@ -24,7 +24,7 @@ Table: Table content {tablename=yukitblr}
 
 Another example but with HTML table in the input Markdown file:
 
-<table class="table table-striped table-hover table-bordered" tablename="yukitblr">
+<table class="table table-striped table-hover table-bordered" data-tablename="yukitblr">
 <colgroup>
 <col style="width: 20%;">
 <col style="width: 40%">

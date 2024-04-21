@@ -54,3 +54,10 @@ If you want to see how is the generated LaTeX file before the PDF creation you c
 ## HTML example
 
 I have added a table in HTML that is parsed too with the filter. HTML is very complex compared to Markdown, so right now there are features that are in the HTML that are not parset into Tabularray-LaTeX.
+
+
+## Extra
+
+The filter also works when parsing to HTML, so the generated HTML table will have "data-tablename" as an attribute. To generate the HTML output file:
+
+```pandoc -f markdown-markdown_in_html_blocks+table_captions markdown_example.md --lua-filter=filter.lua -o markdown_example.html --verbose```
