@@ -8,6 +8,9 @@ function get_rows_data(rows)
       else
         data = data .. ' & '
       end
+      -- change % into \% hack
+      data = data:gsub('([^\\])%%', '%1\\%%')
+      data = data:gsub('^%%', '\\%%')
     end
   end
   return data
@@ -24,13 +27,6 @@ function generate_tabularray(tbl)
   local caption_content = caption:match("{(.-)}")
   if caption_content then
     caption = caption:gsub("{.-}", "")
-  end
-
-  if caption_content then
-    local new_table_class = caption_content:match("=(.*)")
-    if new_table_class then
-      table_class = new_table_class
-    end
   end
 
   -- COLSPECS
@@ -55,6 +51,20 @@ function generate_tabularray(tbl)
     end
 
     col_specs_latex = col_specs_latex .. ']'
+  end
+
+  -- If there's caption data, we override previous data
+  if caption_content then
+    local dict = {}
+    for key, value in string.gmatch(caption_content, '(%w+)=([^%s]+)') do
+        dict[key] = value
+    end
+    if dict["tablename"] then
+      table_class = dict["tablename"]
+    end
+    if dict["colspec"] then
+      col_specs_latex = dict["colspec"]
+    end
   end
 
   local result = pandoc.List:new{pandoc.RawBlock("latex", '\\begin{'..table_class..'}[caption={'..caption..'}]{'..col_specs_latex..'}')}
@@ -108,14 +118,14 @@ if FORMAT:match 'html' then
     local caption_content = caption:match("{(.-)}")
 
     if caption_content then
-      tbl.caption.long = caption:gsub("{.-}", "")
-      local new_table_class = caption_content:match("=(.*)")
-      if new_table_class then
-        table_class = new_table_class
+      local dict = {}
+      -- Extraer cada par clave=valor
+      for key, value in string.gmatch(caption_content, '(%w+)=([^%s]+)') do
+          dict[key] = value
+          tbl.attributes[key] = value
       end
-    end
-
-    tbl.attributes['tablename'] = table_class
+      tbl.caption.long = caption:gsub("{.-}", "")
+    end    
 
     return tbl
   end

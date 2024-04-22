@@ -22,6 +22,18 @@ Another example, with custom tablename
 
 Table: Table content {tablename=yukitblr}
 
+Another example, with custom colspec
+
+
+| Head 3 | Head 2  | Head 1 %20 | 
+|:-------|:-------:|-------:|
+| Alpha %20 | Beta    | Gamma  | 
+| Delta   | Epsilon | Zeta   |
+| Eta     | Theta   | Iota |
+
+Table: {tablename=yukitblr colspec=X[-1]X[2]X[2]}
+
+
 Another example but with HTML table in the input Markdown file:
 
 <table class="table table-striped table-hover table-bordered" data-tablename="yukitblr">
